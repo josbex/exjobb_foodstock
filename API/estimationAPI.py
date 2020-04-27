@@ -16,18 +16,19 @@ def makePrediction(id, month):
     return predictedRate
 
 def updateEstimation(id, month):
-    month_stmt = "SELECT id FROM " + API.util.db_constants['MONTHS_TABLE'] + " WHERE month=?"
+    month_stmt = "SELECT " +  API.util.months_table['MONTH_ID'] + " FROM " + API.util.db_constants['MONTHS_TABLE'] + " WHERE " +  API.util.months_table['MONTH_NAME'] + "=?"
     month_field = [month]
     month_data = API.util.getData(month_stmt, month_field)
-    stmt = "UPDATE " + API.util.db_constants['ESTIMATIONS_TABLE'] + " WHERE month_id=? AND product_id=?"
+    stmt = "UPDATE " + API.util.db_constants['ESTIMATIONS_TABLE'] + " WHERE " +  API.util.estimation_table['MONTH_ID'] + "=? AND " +  API.util.estimation_table['PRODUCT_ID'] + "=?"
     fields = [month_data['id'], id]
     lastrowid = API.util.executeQuery(stmt, fields)
     return lastrowid
 
 def getProductHistory(id):
-    stmt = "SELECT * FROM " + API.util.db_constants['PRODUCT_HISTORY_TABLE'] + "wHERE product_id=?" #TODO: make constants of db columns.
+    stmt = "SELECT * FROM " + API.util.db_constants['PRODUCT_HISTORY_TABLE'] + "wHERE " +  API.util.history_table['PRODUCT_ID'] + "=?"
     field = [id]
     data = API.util.getData(stmt, field)
+    #TODO: Filter data into rate, month dictionary
     return data
 
 def sendPrediction():
