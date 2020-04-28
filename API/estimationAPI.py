@@ -1,14 +1,9 @@
-from API.util import db_constants
-import API.naiveBayes
-import flask
-from flask import request, jsonify
+from util import db_constants
+import naiveBayes
 import sqlite3
 from datetime import datetime
+from datetime import date
 import calendar
-
-@app.route('/', methods=['POST', 'GET'])
-def index():
-    return null
 
 def makePrediction(id, month):
     data = getProductHistory(id)
@@ -18,16 +13,16 @@ def makePrediction(id, month):
     return predictedRate
 
 def updateEstimation(id, month):
-    month_stmt = "SELECT " +  API.util.months_table['MONTH_ID'] + " FROM " + API.util.db_constants['MONTHS_TABLE'] + " WHERE " +  API.util.months_table['MONTH_NAME'] + "=?"
+    month_stmt = "SELECT " +  API.util.months_table['MONTH_ID'] + " FROM " + API.util.db_constants['MONTHS_TABLE'] + " WHERE " +  API.util.months_table['MONTH_NAME'] + "=?;"
     month_field = [month]
     month_data = API.util.getData(month_stmt, month_field)
-    stmt = "UPDATE " + API.util.db_constants['ESTIMATIONS_TABLE'] + " WHERE " +  API.util.estimation_table['MONTH_ID'] + "=? AND " +  API.util.estimation_table['PRODUCT_ID'] + "=?"
+    stmt = "UPDATE " + API.util.db_constants['ESTIMATIONS_TABLE'] + " WHERE " +  API.util.estimation_table['MONTH_ID'] + "=? AND " +  API.util.estimation_table['PRODUCT_ID'] + "=?;"
     fields = [month_data['id'], id]
     lastrowid = API.util.executeQuery(stmt, fields)
     return lastrowid
 
 def getProductHistory(id):
-    stmt = "SELECT * FROM " + API.util.db_constants['PRODUCT_HISTORY_TABLE'] + "wHERE " +  API.util.history_table['PRODUCT_ID'] + "=?"
+    stmt = "SELECT * FROM " + API.util.db_constants['PRODUCT_HISTORY_TABLE'] + "WHERE " +  API.util.history_table['PRODUCT_ID'] + "=?;"
     field = [id]
     data = API.util.getData(stmt, field)
     rate_month_data = filterData(data)
@@ -55,24 +50,65 @@ def whichMonth(dateAdded, dateRemoved):
 
 #Functions for webpage 
 #--------------------------------------------------------------------
-def sendPrediction():
-    return null
 
-def addNewProduct():
-    return null
+def addNewProduct(name, created, expires, qty):
+    shelflife = (expires - created).days
+    stmt = "INSERT INTO " + db_constants['PRODUCT_TABLE'] + " VALUES(?,?);"
+    fields = [name, shelflife]
+    id = API.util.executeQuery(stmt, fields)
+    addToStock(id, qty, created)
+    return id
 
-def addToStock(id):
-    return null
+def addToStock(id, qty, created):
+    stmt = "INSERT INTO " + db_constants['STOCK_TABLE'] + " VALUES(?,?,?,?);"
+    dateAdded = date.today()
+    fields = [id, 0, qty, dateAdded, created]
+    id = API.util.executeQuery(stmt, fields)
+    return id
 
-def removeFromStock(id, qty):
-    return null
+def increaseQty(id):
+    updateStmt = "UPDATE " + API.util.db_constants['STOCK_TABLE'] + " SET " +  API.util.stock_table['QUANTITY'] + " = "+ API.util.stock_table['QUANTITY'] + " + 1  WHERE " +  API.util.stock_table['PRODUCT_ID'] + "=?;"
+    updateFields = [id]
+    id = API.util.executeQuery(updateStmt, updateFields)
+    return id
+
+def decreaseQty(id):
+    #add to history
+    stmt = "SELECT * FROM " + API.util.db_constants['STOCK_TABLE'] + " WHERE " +  API.util.stock_table['PRODUCT_ID'] + "=?;"
+    field = [id]
+    stockInfo = API.util.getData(stmt, field)
+    added = stockInfo[API.util.stock_table['ADDED']]
+    removed = date.today()
+    rate = calculateRate(added, removed)
+    updateHistory(id, added, removed, rate)
+    if stockInfo[API.util.stock_table['QUANITY']] > 1:
+        updateStmt = "UPDATE " + API.util.db_constants['STOCK_TABLE'] + " SET " +  API.util.stock_table['QUANTITY'] + " = "+ API.util.stock_table['QUANTITY'] + " - 1  WHERE " +  API.util.stock_table['PRODUCT_ID'] + "=?;"
+        updateFields = [id]
+        id = API.util.executeQuery(updateStmt, updateFields)
+    else:
+        id = removeFromStock(id)
+    return id
+
+def removeFromStock(id):
+    stmt = "DELETE FROM " + API.util.db_constants['STOCK_TABLE'] + " WHERE " +  API.util.stock_table['PRODUCT_ID'] + "=?;"
+    fields = [id]
+    id = API.util.executeQuery(stmt, fields)
+    #removes item from stock
+    #only callable through decreaseQty
+    #otherwise flag would be neccessary to see if it has been added to history yet
+    return id
 
 def updateHistory(id,added, removed, rate):
-    return null
+    stmt =  "INSERT INTO " + db_constants['PRODUCT_HISTORY_TABLE'] + " VALUES(?,?,?,?);"
+    actualRate = calculateRate(added, removed)
+    fields = [id, added, removed, actualRate]
+    id = API.util.executeQuery(stmt, fields)
+    return id
 
 #Added, removed are datetime objects 
 #retrived from product history table
 def calculateRate(added, removed):
     return (removed - added).days
+
 
 

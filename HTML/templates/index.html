@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>FoodStock</title>
+{% endblock %}
+
+{% block body %}
+<div class="content">
+	<h1>FoodStock</h1>
+	{% if tasks|length < 1 %}
+	<h2>There are no items in your inventory, add an item below</h2>
+	{% else %}
+	<table border=1>
+		<tr>
+			<th>Item</th>
+			<th>Added</th>
+			<th>Actions</th>
+		</tr>
+		{% for item in items %}
+			<tr>
+				<td>{{ item['PRODUCT_ID'] }}</td>
+				<td>{{item['ADDED']}}</td>
+				<td>
+					<a href="/delete/{{item['PRODUCT_ID']}}">Delete</a>
+					<br>
+					<a href="/update/{{item['PRODUCT_ID']}}">Update</a>
+				</td>
+			</tr>
+		{% endfor %}
+	</table>
+	{% endif %}
+	<form action="/" method="POST">
+		<input type="text" name="content" id="content">
+		<input type="submit" name="Add Task" value="Add Task">
+	</form>
+</div>
+{% endblock %}

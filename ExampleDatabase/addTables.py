@@ -61,7 +61,8 @@ def main():
                                 );"""
 
     product_history_table = """ CREATE TABLE IF NOT EXISTS history (
-                                        product_id integer PRIMARY KEY,
+                                        history_id integer PRIMARY KEY,
+                                        product_id integer NOT NULL,
                                         added_date date NOT NULL,
                                         removed_date date NOT NULL,
                                         actualRate integer NOT NULL,
@@ -78,6 +79,7 @@ def main():
                                     );"""
     
     drop_estimations_table = """DROP TABLE estimatedRates;"""
+    drop_history_table = """DROP TABLE history;"""
 
     # create a database connection
     conn = create_connection(database)
@@ -91,8 +93,11 @@ def main():
         #create_table(conn, months_table)
         #create_table(conn, estimation_per_month_table)
 
-        delete_table(conn, drop_estimations_table)
-        create_table(conn, estimation_per_month_table)
+        #delete_table(conn, drop_estimations_table)
+        #create_table(conn, estimation_per_month_table)
+
+        delete_table(conn, drop_history_table)
+        create_table(conn, product_history_table)
 
     else:
         print("Error! cannot create the database connection.")

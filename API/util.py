@@ -11,7 +11,7 @@ db_constants = {"PRODUCT_TABLE" : "products",
 product_table = {'ID' : 'id', 'PRODUCT_NAME' : 'name'}
 months_table = {'MONTH_ID' : 'id', 'MONTH_NAME' : 'month'}
 stock_table = {'PRODUCT_ID' : 'product_id', 'QUANTITY' : 'qty', 'SIZE' : 'packageSize', 'ADDED' : 'addedDate', 'MANUFACTURED' : 'manufactured'}
-history_table = {'PRODUCT_ID' : 'product_id', 'ADDED' : 'added_date', 'REMOVED' : 'removed_date', "ACTUAL_RATE" : 'actualRate'}
+history_table = {'HISTORY_ID' : 'history_id', 'PRODUCT_ID' : 'product_id', 'ADDED' : 'added_date', 'REMOVED' : 'removed_date', "ACTUAL_RATE" : 'actualRate'}
 estimation_table = {'MONTH_ID' : 'month_id', 'PRODUCT_ID' : 'product_id', 'ESTIMATED_RATE' : 'estimatedRate'}
 
 def getDBConnection(db):
