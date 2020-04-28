@@ -3,6 +3,8 @@ import API.naiveBayes
 import flask
 from flask import request, jsonify
 import sqlite3
+from datetime import datetime
+import calendar
 
 @app.route('/', methods=['POST', 'GET'])
 def index():
@@ -28,13 +30,49 @@ def getProductHistory(id):
     stmt = "SELECT * FROM " + API.util.db_constants['PRODUCT_HISTORY_TABLE'] + "wHERE " +  API.util.history_table['PRODUCT_ID'] + "=?"
     field = [id]
     data = API.util.getData(stmt, field)
-    #TODO: Filter data into rate, month dictionary
-    return data
+    rate_month_data = filterData(data)
+    return rate_month_data
 
-def sendPrediction():
-    return null
+def filterData(data):
+    filteredData = {}
+    for row in data:
+        filteredData.update({row[API.util.history_table['ACTUAL_RATE']], monthToString(row[API.util.history_table['ADDED']], row[API.util.history_table['REMOVED']])})
+    return filteredData
+
+def monthToString(dateAdded, dateRemoved):
+    month = whichMonth(dateAdded,dateRemoved)
+    return month.strftime("%B")
+
+def whichMonth(dateAdded, dateRemoved):
+    lastDayofMonth = calendar.monthrange(dateAdded.year, dateAdded.month)
+    #At what month did the consumption mainly occur? 
+    if (lastDayofMonth - dateAdded).days > (datetime.datetime(dateRemoved.year, dateRemoved.month, 1) - dateRemoved).days:
+        return dateAdded
+    else:
+        return dateRemoved
+
+
 
 #Functions for webpage 
 #--------------------------------------------------------------------
+def sendPrediction():
+    return null
+
+def addNewProduct():
+    return null
+
+def addToStock(id):
+    return null
+
+def removeFromStock(id, qty):
+    return null
+
+def updateHistory(id,added, removed, rate):
+    return null
+
+#Added, removed are datetime objects 
+#retrived from product history table
+def calculateRate(added, removed):
+    return (removed - added).days
 
 
