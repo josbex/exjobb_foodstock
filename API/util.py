@@ -29,17 +29,27 @@ def dict_factory(cursor, row):
     return d
 
 def getData(stmt, fields):
-    conn = getDBConnection('test.db')
+    conn = getDBConnection('../ExampleDatabase/test.db')
     conn.row_factory = dict_factory
     cur = conn.cursor()
     data = cur.execute(stmt, fields).fetchall()
     return data
 
 def executeQuery(stmt, fields):
-    conn = getDBConnection('test.db')
+    conn = getDBConnection('../ExampleDatabase/test.db')
     cur = conn.cursor()
     cur.execute(stmt, fields)
     conn.commit()
     return cur.lastrowid
 
+#con = sqlite3.connect('../ExampleDatabase/test.db')
 
+#def sql_fetch(con):
+
+ #   cursorObj = con.cursor()
+
+#  cursorObj.execute('SELECT name from sqlite_master where type= "table"')
+
+ #   print(cursorObj.fetchall())
+
+#sql_fetch(con)

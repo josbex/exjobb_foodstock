@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/main.css')}}">
+	<!-- This block thingies are representing where we are going to insert our code, thus 
+	this is a template that can be used over and over with diffrent contents in those blocks -->
+	{% block head %}{% endblock %}
+</head>
+<body>
+	{% block body %}{% endblock %}
+</body>
+</html>
