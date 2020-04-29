@@ -7,7 +7,7 @@
 {% block body %}
 <div class="content">
 	<h1>FoodStock</h1>
-	{% if tasks|length < 1 %}
+	{% if items|length < 1 %}
 	<h2>There are no items in your inventory, add an item below</h2>
 	{% else %}
 	<table border=1>
@@ -18,20 +18,27 @@
 		</tr>
 		{% for item in items %}
 			<tr>
-				<td>{{ item['PRODUCT_ID'] }}</td>
-				<td>{{item['ADDED']}}</td>
+				<td>{{ item['product_id'] }}</td>
+				<td>{{item['addedDate']}}</td>
 				<td>
-					<a href="/delete/{{item['PRODUCT_ID']}}">Delete</a>
+					<a href="/delete/{{item['product_id']}}">Delete</a>
 					<br>
-					<a href="/update/{{item['PRODUCT_ID']}}">Update</a>
+					<a href="/update/{{item['product_id']}}">Update</a>
 				</td>
 			</tr>
 		{% endfor %}
 	</table>
 	{% endif %}
 	<form action="/" method="POST">
-		<input type="text" name="content" id="content">
-		<input type="submit" name="Add Task" value="Add Task">
+		<label for="name">Enter a product name:</label>
+		<input type="text" name="name" id="name"><br>
+		<label for="created">Enter manufactured date:</label>
+		<input type="text" name="created" id="created"><br>
+		<label for="expires">Enter expire date :</label>
+		<input type="text" name="expires" id="expires"><br>
+		<label for="qty">Enter qty:</label>
+		<input type="text" name="qty" id="qty"><br>
+		<input type="submit" name="Add new item" value="Add new item">
 	</form>
 </div>
 {% endblock %}

@@ -2,3 +2,9 @@ body{
 	margin: 0;
 	font-family: sans-serif;
 }
+
+label {
+	width: 200px;
+	display: inline-block;
+	text-align: right;
+ }
