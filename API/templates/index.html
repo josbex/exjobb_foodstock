@@ -14,12 +14,14 @@
 		<tr>
 			<th>Item</th>
 			<th>Added</th>
+			<th>Quantity</th>
 			<th>Actions</th>
 		</tr>
 		{% for item in items %}
 			<tr>
-				<td>{{ item['product_id'] }}</td>
+				<td>{{ item['name'] }}</td>
 				<td>{{item['addedDate']}}</td>
+				<td>{{item['qty']}}</td>
 				<td>
 					<a href="/delete/{{item['product_id']}}">Delete</a>
 					<br>
