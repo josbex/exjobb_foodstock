@@ -37,6 +37,32 @@ def delete_table(conn, delete_table_sql):
     except Error as e:
         print(e)
 
+def dict_factory(cursor, row):
+    d = {}
+    for idx, col in enumerate(cursor.description):
+        d[col[0]] = row[idx]
+    return d
+
+def getDBConnection(db):
+    try:
+        conn = sqlite3.connect(db)
+    except Error as e:
+        print(e)
+    return conn
+
+def getData(stmt, fields):
+    conn = getDBConnection('../ExampleDatabase/test.db')
+    conn.row_factory = dict_factory
+    cur = conn.cursor()
+    data = cur.execute(stmt, fields).fetchall()
+    return data
+
+def printTable(table_to_print_sql):
+    table = getData(table_to_print_sql, [])
+    print(table)
+    print("Number of items: ", len(table))
+    return 0
+
 def main():
     database = r"test.db"
 
@@ -81,6 +107,9 @@ def main():
     drop_estimations_table = """DROP TABLE estimatedRates;"""
     drop_history_table = """DROP TABLE history;"""
 
+    print_history_table = """ SELECT * FROM history WHERE product_id = 7"""
+    print_estimations_table = """ SELECT * FROM estimatedRates"""
+
     # create a database connection
     conn = create_connection(database)
 
@@ -96,9 +125,10 @@ def main():
         #delete_table(conn, drop_estimations_table)
         #create_table(conn, estimation_per_month_table)
 
-        delete_table(conn, drop_history_table)
-        create_table(conn, product_history_table)
-
+        #delete_table(conn, drop_history_table)
+        #create_table(conn, product_history_table)
+        #printTable(print_history_table)
+        printTable(print_estimations_table)
     else:
         print("Error! cannot create the database connection.")
 
