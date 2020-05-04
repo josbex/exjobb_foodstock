@@ -6,31 +6,33 @@
 
 {% block body %}
 <div class="content">
-	<h1>FoodStock</h1>
-	{% if items|length < 1 %}
-	<h2>There are no items in your inventory, add an item below</h2>
-	{% else %}
-	<table border=1>
-		<tr>
-			<th>Item</th>
-			<th>Added</th>
-			<th>Quantity</th>
-			<th>Actions</th>
-		</tr>
-		{% for item in items %}
+	<div class="table">
+		<h1>FoodStock</h1>
+		{% if items|length < 1 %}
+		<h2>There are no items in your inventory, add an item below</h2>
+		{% else %}
+		<table border=1>
 			<tr>
-				<td>{{ item['name'] }}</td>
-				<td>{{item['addedDate']}}</td>
-				<td>{{item['qty']}}</td>
-				<td>
-					<a href="/delete/{{item['product_id']}}">Delete</a>
-					<br>
-					<a href="/update/{{item['product_id']}}">Update</a>
-				</td>
+				<th>Item</th>
+				<th>Added</th>
+				<th>Quantity</th>
+				<th>Actions</th>
 			</tr>
-		{% endfor %}
-	</table>
-	{% endif %}
+			{% for item in items %}
+				<tr>
+					<td>{{ item['name'] }}</td>
+					<td>{{item['addedDate']}}</td>
+					<td>{{item['qty']}}</td>
+					<td>
+						<a href="/increase/{{item['product_id']}}">Increase</a>
+						<br>
+						<a href="/decrease/{{item['product_id']}}">Decrease</a>
+					</td>
+				</tr>
+			{% endfor %}
+		</table>
+		{% endif %}
+	</div>
 	<form action="/" method="POST">
 		<label for="name">Enter a product name:</label>
 		<input type="text" name="name" id="name"><br>
@@ -40,6 +42,7 @@
 		<input type="text" name="expires" id="expires"><br>
 		<label for="qty">Enter qty:</label>
 		<input type="text" name="qty" id="qty"><br>
+		<label for="button"></label>
 		<input type="submit" name="Add new item" value="Add new item">
 	</form>
 </div>

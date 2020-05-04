@@ -8,3 +8,9 @@ label {
 	display: inline-block;
 	text-align: right;
  }
+
+ .table{
+	width: 300px;
+	margin: 0 auto;
+ }
+
