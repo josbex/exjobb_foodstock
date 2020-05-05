@@ -27,8 +27,8 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/expiresCardview"
-        android:layout_width="396dp"
-        android:layout_height="272dp"
+        android:layout_width="400dp"
+        android:layout_height="198dp"
         android:layout_marginTop="41dp"
         app:cardElevation="7dp"
         app:contentPadding="5dp"
@@ -46,20 +46,20 @@
         android:text="@string/inventoryButton"
         app:layout_constraintBottom_toTopOf="@+id/addButton"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.555"
+        app:layout_constraintHorizontal_bias="0.444"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/expiresCardview"
-        app:layout_constraintVertical_bias="0.706" />
+        app:layout_constraintVertical_bias="0.874" />
 
     <Button
         android:id="@+id/addButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="100dp"
+        android:layout_marginBottom="112dp"
         android:text="@string/AddButton"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.222"
+        app:layout_constraintHorizontal_bias="0.444"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
