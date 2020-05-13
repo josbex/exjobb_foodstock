@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">FoodStock</string>
+    <string name="AppTitle">FoodStock</string>
+    <string name="AddButton">Add product</string>
+    <string name="inventoryButton">View stock</string>
+    <string name="expires_soon">Expires soon</string>
+    <string name="add_product_to_stock">Add product to stock</string>
+    <string name="product_name">Product Name</string>
+    <string name="quantity">Quantity</string>
+    <string name="expires">Expires</string>
 </resources>
